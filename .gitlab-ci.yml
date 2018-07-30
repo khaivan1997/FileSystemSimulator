@@ -2,11 +2,11 @@ image: debian:testing-slim
 
 before_script:
   - apt-get update
-  - apt-get install -y simgrid cmake build-essential
+  - apt-get install -y simgrid cmake build-essential libboost-dev
 
 test:
   script:
   - cmake .
-  - make
+  - make VERBOSE=1
   - ./mysimulator cluster_platform.xml
 
