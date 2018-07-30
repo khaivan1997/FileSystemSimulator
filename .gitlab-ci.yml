@@ -1,0 +1,12 @@
+image: debian:testing-slim
+
+before_script:
+  - apt-get update
+  - apt-get install -y simgrid cmake build-essential
+
+test:
+  script:
+  - cmake .
+  - make
+  - ./mysimulator cluster_platform.xml
+
