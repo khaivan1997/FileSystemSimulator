@@ -9,5 +9,5 @@ find_package(SimGrid 3.20 REQUIRED) # This template requires SimGrid v3.20
 
 include_directories(${SimGrid_INCLUDE_DIR})
 
-add_executable(my_simulator s4u-app-pingpong.cpp)
-target_link_libraries(my_simulator ${SimGrid_LIBRARY})
+add_executable(sample-simulator sample-simulator.cpp)
+target_link_libraries(sample-simulator ${SimGrid_LIBRARY})

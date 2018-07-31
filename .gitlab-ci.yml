@@ -8,5 +8,5 @@ test:
   script:
   - cmake .
   - make VERBOSE=1
-  - ./mysimulator cluster_platform.xml
+  - ./sample-simulator cluster_platform.xml
 
