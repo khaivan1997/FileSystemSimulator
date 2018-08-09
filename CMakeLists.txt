@@ -9,5 +9,6 @@ find_package(SimGrid 3.20 REQUIRED) # This template requires SimGrid v3.20
 
 include_directories(${SimGrid_INCLUDE_DIR})
 
-add_executable(sample-simulator sample-simulator.cpp)
-target_link_libraries(sample-simulator ${SimGrid_LIBRARY})
+add_executable(ping-pong ping-pong.cpp)
+target_link_libraries(ping-pong ${SimGrid_LIBRARY})
+
