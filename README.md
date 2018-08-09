@@ -1,7 +1,8 @@
 # SimGrid Template Project using S4U and cmake
 
 This project contains all the cmake configuration that you need to
-start your own project using the S4U interface of SimGrid.
+start your own project using the S4U interface of SimGrid, along with
+several small example applications.
 
 ## How to proceed
 1. Fork this repository. 
