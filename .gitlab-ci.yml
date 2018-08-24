@@ -8,5 +8,5 @@ test:
   script:
   - cmake .
   - make VERBOSE=1
-  - ./sample-simulator cluster_platform.xml
-
+  - ./master-workers small_platform.xml master-workers_d.xml
+  - ./ping-pong cluster_platform.xml
