@@ -2,7 +2,7 @@ image: simgrid/stable
 
 before_script:
   - apt-get update
-  - apt-get install -y simgrid cmake build-essential libboost-dev
+  - apt-get install -y cmake build-essential libboost-dev
 
 test:
   script:
