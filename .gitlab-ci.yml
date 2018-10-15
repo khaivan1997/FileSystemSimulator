@@ -13,6 +13,7 @@ test-git:
 test-image:
   image: simgrid/tuto-s4u
   script:
+  - mkdir /source/tutorial # create the pseudo-volume
   - cp -r /source/simgrid-template-s4u.git/* /source/tutorial
   - cd /source/tutorial
   - cmake .
