@@ -10,19 +10,19 @@
 
 test-git-stable:
   image: simgrid/stable
-    <<: *build_git
+  <<: *build_git
 
 test-git-stable-3.22:
   image: simgrid/stable:v3.22.2
-    <<: *build_git
-
+  <<: *build_git
+    
 test-git-stable-3.21:
   image: simgrid/stable:v3_21
-    <<: *build_git
+  <<: *build_git
 
 test-git-stable-3.20:
   image: simgrid/stable:v3.20
-    <<: *build_git
+  <<: *build_git
 
 
 # Test that the simgrid/tuto-s4u docker image is usable as advised in tuto
