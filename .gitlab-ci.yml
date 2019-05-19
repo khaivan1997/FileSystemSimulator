@@ -8,19 +8,19 @@
   - ./master-workers small_platform.xml master-workers_d.xml
   - ./ping-pong cluster_platform.xml
 
-test-git-stable:
-  image: simgrid/stable
+test-git-unstable:
+  image: simgrid/unstable
   <<: *build_git
 
-test-git-stable-3.22:
+test-git-v3.22:
   image: simgrid/stable:v3.22.2
   <<: *build_git
     
-test-git-stable-3.21:
+test-git-v3.21:
   image: simgrid/stable:v3_21
   <<: *build_git
 
-test-git-stable-3.20:
+test-git-v3.20:
   image: simgrid/stable:v3.20
   <<: *build_git
 
