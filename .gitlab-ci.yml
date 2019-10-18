@@ -12,6 +12,10 @@ test-git-unstable:
   image: simgrid/unstable
   <<: *build_git
 
+test-git-v3.24:
+  image: simgrid/stable:v3.24
+  <<: *build_git
+
 test-git-v3.23.2:
   image: simgrid/stable:v3.23.2
   <<: *build_git
