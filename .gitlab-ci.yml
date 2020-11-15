@@ -3,6 +3,7 @@
   script:
   - apt-get --allow-releaseinfo-change update
   - apt-get -y install apt
+  - apt-get -y install libc6 -f -o APT::Immediate-Configure=false
   - apt-get -y dist-upgrade 
   - apt-get install -y cmake build-essential libboost-dev
   - cmake .
