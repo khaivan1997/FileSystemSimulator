@@ -2,7 +2,8 @@
 .build_git: &build_git
   script:
   - apt-get --allow-releaseinfo-change update
-  - apt-get -y -oAPT::Immediate-Configure=false dist-upgrade 
+  - apt-get -y install apt
+  - apt-get -y dist-upgrade 
   - apt-get install -y cmake build-essential libboost-dev
   - cmake .
   - make VERBOSE=1
