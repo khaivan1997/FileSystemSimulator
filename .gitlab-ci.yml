@@ -10,12 +10,12 @@
 
 .build_our_img: &build_our_img
   script:
-  - apt-get update
-  - apt-get install -y cmake build-essential libboost-dev
-  - cmake .
-  - make VERBOSE=1
-  - ./master-workers small_platform.xml master-workers_d.xml
-  - ./ping-pong cluster_platform.xml
+    - apt-get update
+    - apt-get install -y cmake build-essential libboost-dev
+    - cmake .
+    - make VERBOSE=1
+    - ./master-workers small_platform.xml master-workers_d.xml
+    - ./ping-pong cluster_platform.xml
 
 test-git-unstable:
   image: simgrid/unstable
@@ -40,42 +40,41 @@ test-git-v3.25:
 # (TEST B) test against several official docker images
 ######################################################
 # v3.25 is Debian 11, Ubuntu 20.10, Ubuntu 21.04
-# S4U API broke in v3.22, we cannot easily make this template working with previous versions.
+# S4U API broke in v3.22, we cannot easily make this template working with previous versions.
 
 .build_pkg: &build_pkg
   script:
-  - apt-get update
-  - apt-get install -y cmake build-essential libsimgrid-dev
-  - cmake .
-  - make VERBOSE=1
-  - ./master-workers small_platform.xml master-workers_d.xml
-  - ./ping-pong cluster_platform.xml
+    - apt-get update
+    - apt-get install -y cmake build-essential libsimgrid-dev
+    - cmake .
+    - make VERBOSE=1
+    - ./master-workers small_platform.xml master-workers_d.xml
+    - ./ping-pong cluster_platform.xml
 
 test-git-debian11:
   image: debian:11
   <<: *build_pkg
 
-test-git-ubuntu2004
+test-git-ubuntu2004:
   image: ubuntu:20.04
   <<: *build_pkg
-test-git-ubuntu2104
+test-git-ubuntu2104:
   image: ubuntu:21.04
   <<: *build_pkg
-test-git-ubuntu2110
+test-git-ubuntu2110:
   image: ubuntu:21.10
   <<: *build_pkg
 
 
-# (TEST C) Test the simgrid/tuto-s4u docker image 
+# (TEST C) Test the simgrid/tuto-s4u docker image
 #################################################
 test-image:
   image: simgrid/tuto-s4u
   script:
-  - mkdir /source/tutorial # create the pseudo-volume
-  - cp -r /source/simgrid-template-s4u.git/* /source/tutorial
-  - cd /source/tutorial
-  - cmake .
-  - make VERBOSE=1
-  - ./master-workers small_platform.xml master-workers_d.xml
-  - ./ping-pong cluster_platform.xml
- 
+    - mkdir /source/tutorial # create the pseudo-volume
+    - cp -r /source/simgrid-template-s4u.git/* /source/tutorial
+    - cd /source/tutorial
+    - cmake .
+    - make VERBOSE=1
+    - ./master-workers small_platform.xml master-workers_d.xml
+    - ./ping-pong cluster_platform.xml
