@@ -5,6 +5,7 @@
 #  - apt-get -y install apt
 #  - apt-get -y install libc6 -f -o APT::Immediate-Configure=false
 #  - apt-get -y dist-upgrade 
+  - apt-get update
   - apt-get install -y cmake build-essential libboost-dev
   - cmake .
   - make VERBOSE=1
