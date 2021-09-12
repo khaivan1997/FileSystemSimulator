@@ -1,10 +1,15 @@
-# Test that the git version of this template compiles on the simgrid/unstable docker image 
-.build_git: &build_git
+# This file tests that the tutorial template remains usable for many users, regardless of their environment
+# There is several tests:
+#   A: against several versions of our docker stable image
+#   B: against official packages of Debian and Ubuntu
+#   C: against our specific docker image
+
+# (TEST A) test the tutorial against our simgrid/stable docker images
+#####################################################################
+# Targets: simgrid git + 4 last simgrid releases (at most)
+
+.build_our_img: &build_our_img
   script:
-#  - apt-get --allow-releaseinfo-change update
-#  - apt-get -y install apt
-#  - apt-get -y install libc6 -f -o APT::Immediate-Configure=false
-#  - apt-get -y dist-upgrade 
   - apt-get update
   - apt-get install -y cmake build-essential libboost-dev
   - cmake .
@@ -14,28 +19,55 @@
 
 test-git-unstable:
   image: simgrid/unstable
-  <<: *build_git
+  <<: *build_our_img
+
+test-git-v3.28:
+  image: simgrid/stable:v3.28
+  <<: *build_our_img
+
+test-git-v3.27:
+  image: simgrid/stable:v3.27
+  <<: *build_our_img
+
+test-git-v3.26:
+  image: simgrid/stable:v3.26
+  <<: *build_our_img
 
 test-git-v3.25:
   image: simgrid/stable:v3.25
-  <<: *build_git
+  <<: *build_our_img
 
-test-git-v3.24:
-  image: simgrid/stable:v3.24
-  <<: *build_git
+# (TEST B) test against several official docker images
+######################################################
+# v3.25 is Debian 11, Ubuntu 20.10, Ubuntu 21.04
+# S4U API broke in v3.22, we cannot easily make this template working with previous versions.
 
-test-git-v3.23.2:
-  image: simgrid/stable:v3.23.2
-  <<: *build_git
+.build_pkg: &build_pkg
+  script:
+  - apt-get update
+  - apt-get install -y cmake build-essential libsimgrid-dev
+  - cmake .
+  - make VERBOSE=1
+  - ./master-workers small_platform.xml master-workers_d.xml
+  - ./ping-pong cluster_platform.xml
 
-test-git-v3.22:
-  image: simgrid/stable:v3.22.2
-  <<: *build_git
-    
-# S4U API broke in v3.22, we cannot easily make this template working
-# with previous versions.
+test-git-debian11:
+  image: debian:11
+  <<: *build_pkg
 
-# Test that the simgrid/tuto-s4u docker image is usable as advised in tuto
+test-git-ubuntu2004
+  image: ubuntu:20.04
+  <<: *build_pkg
+test-git-ubuntu2104
+  image: ubuntu:21.04
+  <<: *build_pkg
+test-git-ubuntu2110
+  image: ubuntu:21.10
+  <<: *build_pkg
+
+
+# (TEST C) Test the simgrid/tuto-s4u docker image 
+#################################################
 test-image:
   image: simgrid/tuto-s4u
   script:
