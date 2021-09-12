@@ -42,10 +42,12 @@ test-git-v3.25:
 # v3.25 is Debian 11, Ubuntu 20.10, Ubuntu 21.04
 # S4U API broke in v3.22, we cannot easily make this template working with previous versions.
 
+# Ubuntu's tzdata requires TZ=Europe/Paris DEBIAN_FRONTEND=noninteractive in at least v20.04 to v21.10
+
 .build_pkg: &build_pkg
   script:
     - apt-get update
-    - apt-get install -y cmake build-essential libsimgrid-dev
+    - TZ=Europe/Paris DEBIAN_FRONTEND=noninteractive apt-get install -y cmake build-essential libsimgrid-dev
     - cmake .
     - make VERBOSE=1
     - ./master-workers small_platform.xml master-workers_d.xml
