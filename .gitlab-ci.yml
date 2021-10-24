@@ -21,6 +21,10 @@ test-git-unstable:
   image: simgrid/unstable
   <<: *build_our_img
 
+test-git-v3.29:
+  image: simgrid/stable:v3.29
+  <<: *build_our_img
+
 test-git-v3.28:
   image: simgrid/stable:v3.28
   <<: *build_our_img
@@ -31,10 +35,6 @@ test-git-v3.27:
 
 test-git-v3.26:
   image: simgrid/stable:v3.26
-  <<: *build_our_img
-
-test-git-v3.25:
-  image: simgrid/stable:v3.25
   <<: *build_our_img
 
 # (TEST B) test against several official docker images
