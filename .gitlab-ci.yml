@@ -57,14 +57,19 @@ test-git-debian11:
   image: debian:11
   <<: *build_pkg
 
+# Some Ubuntu images require the entrypoint to be specified. See https://gitlab.com/gitlab-org/gitlab-runner/-/issues/27614
 test-git-ubuntu2004:
   image: ubuntu:20.04
   <<: *build_pkg
 test-git-ubuntu2104:
-  image: ubuntu:21.04
+  image:
+    name: ubuntu:21.04
+    entrypoint: [ '/bin/sh', '-c' ]
   <<: *build_pkg
 test-git-ubuntu2110:
-  image: ubuntu:21.10
+  image:
+    name: ubuntu:21.10
+    entrypoint: [ '/bin/sh', '-c' ]
   <<: *build_pkg
 
 
