@@ -10,6 +10,7 @@
 
 .build_our_img: &build_our_img
   script:
+    - apt-get install gpgv
     - apt-get update
     - apt-get install -y cmake build-essential libboost-dev
     - cmake .
