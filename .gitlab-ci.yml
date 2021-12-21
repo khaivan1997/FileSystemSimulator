@@ -48,7 +48,6 @@ test-git-v3.26:
 
 .build_pkg: &build_pkg
   script:
-    - apt-get install gpgv
     - apt-get update
     - TZ=Europe/Paris DEBIAN_FRONTEND=noninteractive apt-get install -y cmake build-essential libsimgrid-dev
     - cmake .
