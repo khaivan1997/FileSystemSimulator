@@ -10,7 +10,6 @@
 
 .build_our_img: &build_our_img
   script:
-    - apt-get install gpgv
     - apt-get update
     - apt-get install -y cmake build-essential libboost-dev
     - cmake .
@@ -19,7 +18,9 @@
     - ./ping-pong cluster_platform.xml
 
 test-git-unstable:
-  image: simgrid/unstable
+  image:
+    name: simgrid/unstable
+    entrypoint: ['/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
   <<: *build_our_img
 
 test-git-v3.29:
@@ -47,6 +48,7 @@ test-git-v3.26:
 
 .build_pkg: &build_pkg
   script:
+    - apt-get install gpgv
     - apt-get update
     - TZ=Europe/Paris DEBIAN_FRONTEND=noninteractive apt-get install -y cmake build-essential libsimgrid-dev
     - cmake .
