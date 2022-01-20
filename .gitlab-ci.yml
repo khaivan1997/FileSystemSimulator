@@ -65,20 +65,16 @@ test-git-ubuntu2004:
   image: ubuntu:20.04
   <<: *build_pkg
 
-# Modern Ubuntu systems are borken in a weird way so I comment them out.
-# We should try them again once the framagit infra gets updated.
-# https://stackoverflow.com/questions/66319610/gpg-error-in-ubuntu-21-04-after-second-apt-get-update-during-docker-build
-#
-#test-git-ubuntu2104:
-#  image:
-#    name: ubuntu:21.04
-#    entrypoint: ['/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
-#  <<: *build_pkg
-#test-git-ubuntu2110:
-#  image:
-#    name: ubuntu:21.10
-#    entrypoint: ['/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
-#  <<: *build_pkg
+test-git-ubuntu2104:
+  image:
+    name: ubuntu:21.04
+    entrypoint: ['/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
+  <<: *build_pkg
+test-git-ubuntu2110:
+  image:
+    name: ubuntu:21.10
+    entrypoint: ['/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
+  <<: *build_pkg
 
 
 # (TEST C) Test the simgrid/tuto-s4u docker image
