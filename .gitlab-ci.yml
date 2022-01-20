@@ -65,17 +65,21 @@ test-git-ubuntu2004:
   image: ubuntu:20.04
   <<: *build_pkg
 
+# Modern Ubuntu systems are borken in a weird way, so `allow_failure: true`. Remove that once it gets fixed.
+# https://stackoverflow.com/questions/66319610/gpg-error-in-ubuntu-21-04-after-second-apt-get-update-during-docker-build
+#
 test-git-ubuntu2104:
   image:
     name: ubuntu:21.04
     entrypoint: ['/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
   <<: *build_pkg
+  allow_failure: true
 test-git-ubuntu2110:
   image:
     name: ubuntu:21.10
     entrypoint: ['/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
   <<: *build_pkg
-
+  allow_failure: true
 
 # (TEST C) Test the simgrid/tuto-s4u docker image
 #################################################
