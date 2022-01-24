@@ -11,7 +11,7 @@
 .build_our_img: &build_our_img
   script:
     - apt-get update
-    - apt-get install -y cmake build-essential libboost-dev
+    - apt-get install -y cmake build-essential libboost-dev python-is-python3
     - cmake .
     - make VERBOSE=1
     - ./master-workers small_platform.xml master-workers_d.xml
@@ -51,11 +51,13 @@ test-git-v3.26:
 .build_pkg: &build_pkg
   script:
     - apt-get update
-    - TZ=Europe/Paris DEBIAN_FRONTEND=noninteractive apt-get install -y cmake build-essential libsimgrid-dev
+    - TZ=Europe/Paris DEBIAN_FRONTEND=noninteractive apt-get install -y cmake build-essential libsimgrid-dev python3-simgrid
     - cmake .
     - make VERBOSE=1
     - ./master-workers small_platform.xml master-workers_d.xml
     - ./ping-pong cluster_platform.xml
+    # Test python only if the module is there
+    - find /usr/lib/ -name 'simgrid.cpython*so' | grep -q so && python3 master-workers.py small_platform.xml master-workers_d.xml --cfg="tracing:yes tracing/actor:yes"
 
 test-git-debian11:
   image: debian:11
@@ -97,3 +99,5 @@ test-image:
     - make VERBOSE=1
     - ./master-workers small_platform.xml master-workers_d.xml
     - ./ping-pong cluster_platform.xml
+    # Test python only if the module is there
+    - find /usr/lib/ -name 'simgrid.cpython*so' | grep -q so && python master-workers.py small_platform.xml master-workers_d.xml --cfg="tracing:yes tracing/actor:yes"
