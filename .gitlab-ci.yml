@@ -85,7 +85,8 @@ test-git-ubuntu2110:
 # (TEST C) Test the simgrid/tuto-s4u docker image
 #################################################
 test-image:
-  image: simgrid/tuto-s4u
+  image:
+    name: simgrid/tuto-s4u
     entrypoint: ['/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
   script:
     - mkdir /source/tutorial # create the pseudo-volume
