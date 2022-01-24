@@ -22,7 +22,7 @@
       if printf '%s\n%s\n' "3.29.1" "$sgversion" | sort --check=quiet --version-sort ; then \
         python master-workers.py small_platform.xml master-workers_d.xml --cfg="tracing:yes tracing/actor:yes" ; \
       else \
-        echo "Python not tested: SimGrid is v$sgversion but 3.29.1 or higher is expected"; \
+        echo "Python not tested. SimGrid is v$sgversion but 3.29.1 or higher is expected"; \
       fi
 
 test-git-unstable:
