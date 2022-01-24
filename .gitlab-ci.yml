@@ -16,14 +16,8 @@
     - make VERBOSE=1
     - ./master-workers small_platform.xml master-workers_d.xml
     - ./ping-pong cluster_platform.xml
-    - sgminorver=$(grep "define SIMGRID_VERSION_MINOR" /usr/include/simgrid/version.h |cut -d' ' -f 3) 
-      sgpatchver=$(grep "define SIMGRID_VERSION_PATCH" /usr/include/simgrid/version.h |cut -d' ' -f 3) 
-      sgversion="3.$sgminorver.$sgpatchver" 
-      if printf '%s\n%s\n' "3.29.1" "$sgversion" | sort --check=quiet --version-sort ; then 
-        python master-workers.py small_platform.xml master-workers_d.xml --cfg="tracing:yes tracing/actor:yes" ; 
-      else 
-        echo "Python not tested. SimGrid is v$sgversion but 3.29.1 or higher is expected"; 
-      fi
+    # Test python only if the module is there
+    - find /usr/lib/ -name 'simgrid.cpython*so' | grep -q so && python master-workers.py small_platform.xml master-workers_d.xml --cfg="tracing:yes tracing/actor:yes"
 
 test-git-unstable:
   image:
