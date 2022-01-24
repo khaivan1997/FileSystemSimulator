@@ -17,7 +17,7 @@
     - ./master-workers small_platform.xml master-workers_d.xml
     - ./ping-pong cluster_platform.xml
     # Test python only if the module is there
-    - find /usr/lib/ -name 'simgrid.cpython*so' | grep -q so && python master-workers.py small_platform.xml master-workers_d.xml --cfg="tracing:yes tracing/actor:yes"
+    - find /usr/lib/ -name 'simgrid.cpython*so' | grep -q so && python master-workers.py small_platform.xml master-workers_d.xml
 
 test-git-unstable:
   image:
@@ -57,7 +57,7 @@ test-git-v3.26:
     - ./master-workers small_platform.xml master-workers_d.xml
     - ./ping-pong cluster_platform.xml
     # Test python only if the module is there
-    - find /usr/lib/ -name 'simgrid.cpython*so' | grep -q so && python3 master-workers.py small_platform.xml master-workers_d.xml --cfg="tracing:yes tracing/actor:yes"
+    - find /usr/lib/ -name 'simgrid.cpython*so' | grep -q so && python3 master-workers.py small_platform.xml master-workers_d.xml
 
 test-git-debian11:
   image: debian:11
@@ -100,4 +100,4 @@ test-image:
     - ./master-workers small_platform.xml master-workers_d.xml
     - ./ping-pong cluster_platform.xml
     # Test python only if the module is there
-    - find /usr/lib/ -name 'simgrid.cpython*so' | grep -q so && python master-workers.py small_platform.xml master-workers_d.xml --cfg="tracing:yes tracing/actor:yes"
+    - find /usr/lib/ -name 'simgrid.cpython*so' | grep -q so && python master-workers.py small_platform.xml master-workers_d.xml
