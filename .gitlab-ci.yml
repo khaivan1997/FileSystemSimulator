@@ -16,6 +16,7 @@
     - make VERBOSE=1
     - ./master-workers small_platform.xml master-workers_d.xml
     - ./ping-pong cluster_platform.xml
+    - python master-workers.py small_platform.xml master-workers_d.xml --cfg=tracing:yes --cfg=tracing/actor:yes
 
 test-git-unstable:
   image:
