@@ -20,7 +20,7 @@
       sgpatchver=$(grep "define SIMGRID_VERSION_PATCH" /usr/include/simgrid/version.h |cut -d' ' -f 3) \
       sgversion="3.$sgminorver.$sgpatchver" \
       if printf '%s\n%s\n' "3.29.1" "$sgversion" | sort --check=quiet --version-sort ; then \
-        python master-workers.py small_platform.xml master-workers_d.xml --cfg=tracing:yes --cfg=tracing/actor:yes; \
+        python master-workers.py small_platform.xml master-workers_d.xml --cfg="tracing:yes tracing/actor:yes" ; \
       else \
         echo "Python not tested: SimGrid is v$sgversion but 3.29.1 or higher is expected"; \
       fi
