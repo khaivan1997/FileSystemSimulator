@@ -63,12 +63,11 @@ test-git-debian11:
   image: debian:11
   <<: *build_pkg
 
+# On ubuntu 20:04, the python module is provided as simgrid.cpython-37m-x86_64-linux-gnu but the default python version is 3.8
+# So don't test that version that won't work
+
 # Some Ubuntu images require the entrypoint to be specified. And we need /bin/sh to be bash :(
 # See https://gitlab.com/gitlab-org/gitlab-runner/-/issues/27614
-test-git-ubuntu2004:
-  image: ubuntu:20.04
-  <<: *build_pkg
-
 # Modern Ubuntu systems are borken in a weird way, so `allow_failure: true`. Remove that once it gets fixed.
 # https://stackoverflow.com/questions/66319610/gpg-error-in-ubuntu-21-04-after-second-apt-get-update-during-docker-build
 #
