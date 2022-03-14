@@ -24,13 +24,13 @@ test-git-unstable:
     name: simgrid/unstable
     entrypoint: ['/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
   only:
-   - main
+   - master
   <<: *build_our_img
 
 test-git-v3.30:
   image: simgrid/stable:v3.30
   only:
-   - main
+   - master
   <<: *build_our_img
 
 test-git-v3.29:
