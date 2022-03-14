@@ -7,7 +7,7 @@ project(SimGridTemplateProject) # TODO: give a real name to your project here
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
-find_package(SimGrid 3.22 REQUIRED) # This template requires SimGrid v3.22
+find_package(SimGrid 3.27 REQUIRED) # This template requires SimGrid v3.27 because we use templated get()
 
 include_directories(${SimGrid_INCLUDE_DIR})
 

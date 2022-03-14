@@ -16,7 +16,7 @@ static void pinger(simgrid::s4u::Mailbox* in, simgrid::s4u::Mailbox* out)
 
   out->put(payload, 1);
   /* - ... then wait for the (large) pong */
-  double* sender_time = static_cast<double*>(in->get());
+  double* sender_time = in->get<double>();
 
   double communication_time = simgrid::s4u::Engine::get_clock() - *sender_time;
   XBT_INFO("Task received : large communication (bandwidth bound)");
@@ -29,7 +29,7 @@ static void ponger(simgrid::s4u::Mailbox* in, simgrid::s4u::Mailbox* out)
   XBT_INFO("Pong from mailbox %s to mailbox %s", in->get_name().c_str(), out->get_name().c_str());
 
   /* - Receive the (small) ping first ....*/
-  double* sender_time = static_cast<double*>(in->get());
+  double* sender_time = in->get<double>();
   double communication_time = simgrid::s4u::Engine::get_clock() - *sender_time;
   XBT_INFO("Task received : small communication (latency bound)");
   XBT_INFO(" Ping time (latency bound) %f", communication_time);
