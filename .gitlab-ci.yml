@@ -43,7 +43,7 @@ test-git-v3.27:
 
 test-git-v3.26:
   image: simgrid/stable:v3.26
-  branch: simgrid-v3.25
+  only: simgrid-v3.25
   <<: *build_our_img
 
 # (TEST B) test against several official docker images
@@ -66,7 +66,7 @@ test-git-v3.26:
 
 test-git-debian11:
   image: debian:11
-  branch: simgrid-v3.25
+  only: simgrid-v3.25
   <<: *build_pkg
 
 # On ubuntu 20:04, the python module is provided as simgrid.cpython-37m-x86_64-linux-gnu but the default python version is 3.8
@@ -79,13 +79,13 @@ test-git-ubuntu2104:
   image:
     name: ubuntu:21.04
     entrypoint: ['/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
-  branch: simgrid-v3.25
+  only: simgrid-v3.25
   <<: *build_pkg
 test-git-ubuntu2110:
   image:
     name: ubuntu:21.10
     entrypoint: ['/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
-  branch: simgrid-v3.25
+  only: simgrid-v3.25
   <<: *build_pkg
 
 # (TEST C) Test the simgrid/tuto-s4u docker image
