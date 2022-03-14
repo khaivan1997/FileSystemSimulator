@@ -65,7 +65,8 @@ test-git-v3.26:
 
 test-git-debian11:
   image: debian:11
-  tag: simgrid-v3.25
+  tags:
+    - simgrid-v3.25
   <<: *build_pkg
 
 # On ubuntu 20:04, the python module is provided as simgrid.cpython-37m-x86_64-linux-gnu but the default python version is 3.8
