@@ -17,7 +17,8 @@
     - ./master-workers small_platform.xml master-workers_d.xml
     - ./ping-pong cluster_platform.xml
     # Test python only if the module is there
-    - if find /usr/lib/ -name 'simgrid.cpython*so' | grep -q so ; then python master-workers.py small_platform.xml master-workers_d.xml ; else echo "Python module not found"; fi
+    - python --version
+    - if find /usr/lib/ -name 'simgrid.cpython*so' | grep so ; then python master-workers.py small_platform.xml master-workers_d.xml ; else echo "Python module not found"; fi
 
 test-git-unstable:
   image:
