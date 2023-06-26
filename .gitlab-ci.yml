@@ -28,6 +28,12 @@ test-git-unstable:
    - master
   <<: *build_our_img
 
+test-git-v3.34:
+  image: simgrid/stable:v3.32
+  only:
+   - master
+  <<: *build_our_img
+
 test-git-v3.32:
   image: simgrid/stable:v3.32
   only:
@@ -81,6 +87,10 @@ test-git-v3.26:
     - ./ping-pong cluster_platform.xml
     # Test python only if the module is there
     - if find /usr/lib/ -name 'simgrid.cpython*so' | grep -q so ; then python3 master-workers.py small_platform.xml master-workers_d.xml ; else echo "Python module not found"; fi
+
+test-git-debian12:
+  image: debian:12
+  <<: *build_pkg
 
 test-git-debian11:
   image: debian:11
