@@ -6,3 +6,6 @@ build/
 cmake_install.cmake
 ping-pong
 master-workers
+/build/
+/.idea/
+/cmake-build-debug/

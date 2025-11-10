@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-project(SimGridTemplateProject) # TODO: give a real name to your project here
+project(FileSystemSimulator) # TODO: give a real name to your project here
 
 # Search for SimGrid
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
@@ -11,9 +11,10 @@ find_package(SimGrid 3.27 REQUIRED) # This template requires SimGrid v3.27 becau
 
 include_directories(${SimGrid_INCLUDE_DIR})
 
-add_executable(ping-pong ping-pong.cpp)
-target_link_libraries(ping-pong ${SimGrid_LIBRARY})
+include_directories(src)
 
-add_executable(master-workers master-workers.cpp)
-target_link_libraries(master-workers ${SimGrid_LIBRARY})
+# Glob all source files from src directory
+file(GLOB_RECURSE SRC_FILES "src/*.cpp" "src/*.c")
 
+add_executable(FileSystemSimulator main.cpp ${SRC_FILES})
+target_link_libraries(FileSystemSimulator ${SimGrid_LIBRARY})

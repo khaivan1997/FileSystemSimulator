@@ -1,0 +1,25 @@
+<?xml version='1.0'?>
+<!DOCTYPE platform SYSTEM "https://simgrid.org/simgrid.dtd">
+<platform version="4.1">
+  <zone id="AS0" routing="Full">
+    <host id="mgs_host" speed="10Gf"/>
+    <host id="mds_host" speed="10Gf"/>
+    <host id="oss_1_host" speed="10Gf">
+      <prop id="ost_count" value="4"/>
+    </host>
+    <host id="oss_2_host" speed="10Gf">
+      <prop id="ost_count" value="2"/>
+    </host>
+    <host id="client1_host" speed="10Gf"/>
+    <link id="L1" bandwidth="1GBps" latency="100us"/>
+    <route src="mgs_host" dst="oss_1_host"><link_ctn id="L1"/></route>
+    <route src="mgs_host" dst="oss_2_host"><link_ctn id="L1"/></route>
+    <route src="mds_host" dst="mgs_host"><link_ctn id="L1"/></route>
+    <route src="mds_host" dst="oss_1_host"><link_ctn id="L1"/></route>
+    <route src="mds_host" dst="oss_2_host"><link_ctn id="L1"/></route>
+    <route src="client1_host" dst="mds_host"><link_ctn id="L1"/></route>
+    <route src="client1_host" dst="mgs_host"><link_ctn id="L1"/></route>
+    <route src="client1_host" dst="oss_1_host"><link_ctn id="L1"/></route>
+    <route src="client1_host" dst="oss_2_host"><link_ctn id="L1"/></route>
+  </zone>
+</platform>
