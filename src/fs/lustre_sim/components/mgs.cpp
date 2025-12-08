@@ -3,7 +3,7 @@
 #include <simgrid/s4u.hpp>
 #include <xbt/log.h>
 
-#include "core/logging.hpp"
+#include "core/simulation/logging.hpp"
 
 #include <cinttypes>
 
@@ -22,7 +22,7 @@ void MgsActor::run()
   next_broadcast_time_ = simgrid::s4u::Engine::get_clock() + params_.broadcast_interval_seconds;
 
   auto comm = receiveAsync();
-  while (running_) {
+  while (isRunning()) {
     if (auto* msg = tryReceive(comm)) {
       handleMessage(*msg);
       delete msg;
@@ -153,12 +153,22 @@ void MgsActor::broadcastSnapshot(const std::vector<msg::OstEntry>& snapshot)
 void MgsActor::handleShutdown(const core::Message& msg)
 {
   SIM_LOG_INFO(name(), "received shutdown from %s", msg.src.c_str());
-  running_ = false;
-  for (const auto& mailbox : known_oss_mailboxes_) {
+  auto send_shutdown = [&](const std::string& mailbox) {
+    if (mailbox.empty())
+      return;
     auto payload = std::make_unique<msg::Shutdown>();
     core::Message shutdown{0, name(), mailbox, std::move(payload)};
     sendAsync(mailbox, shutdown);
+    SIM_LOG_INFO(name(), "-> %s Shutdown{}", mailbox.c_str());
+  };
+  for (const auto& mailbox : known_oss_mailboxes_)
+    send_shutdown(mailbox);
+  send_shutdown(params_.broadcast_mailbox);
+  while (hasPendingSends()) {
+    reapPendingSends();
+    simgrid::s4u::this_actor::sleep_for(0.0001);
   }
+  stop();
 }
 
 void MgsActor::handleProblemReport(const core::Message& msg, const msg::OstProblemReport& report)

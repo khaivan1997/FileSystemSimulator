@@ -2,7 +2,7 @@
 
 #include "fs/lustre_sim/clients/auto_client_config.hpp"
 
-#include "core/message.hpp"
+#include "core/simulation/message.hpp"
 #include "fs/lustre_sim/messages/all.hpp"
 
 #include <cstdint>

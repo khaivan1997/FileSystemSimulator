@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/actor_base.hpp"
+#include "core/simulation/actor_base.hpp"
 #include "fs/lustre_sim/constants.hpp"
 #include "fs/lustre_sim/messages/all.hpp"
 
@@ -50,7 +50,6 @@ private:
   std::unordered_set<std::string> known_oss_mailboxes_;
   double next_broadcast_time_{0.0};
   bool initial_ready_announced_{false};
-  bool running_{true};
 };
 
 } // namespace sim::fs::lustre_sim

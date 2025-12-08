@@ -1,7 +1,7 @@
 #include "fs/lustre_sim/components/ost.hpp"
 
 #include "fs/lustre_sim/messages/all.hpp"
-#include "core/logging.hpp"
+#include "core/simulation/logging.hpp"
 
 #include <simgrid/s4u.hpp>
 

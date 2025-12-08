@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/actor_base.hpp"
+#include "core/simulation/actor_base.hpp"
 #include "fs/lustre_sim/constants.hpp"
 #include "fs/lustre_sim/messages/all.hpp"
 
@@ -81,7 +81,6 @@ private:
   bool metadata_paused_{false};
   bool table_ready_{false};
   bool mgs_ready_{false};
-  bool running_{true};
   bool request_needed_{false};
 };
 

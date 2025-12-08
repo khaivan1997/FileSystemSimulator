@@ -1,6 +1,8 @@
 #include "fs/lustre_sim/basic/basic_lustre.hpp"
 
-#include "core/actor_base.hpp"
+#include "core/simulation/actor_base.hpp"
+#include "core/report/event_bus.hpp"
+#include "core/report/simulation_report.hpp"
 #include "fs/lustre_sim/clients/auto_client.hpp"
 #include "fs/lustre_sim/constants.hpp"
 #include "fs/lustre_sim/components/mds.hpp"
@@ -12,6 +14,7 @@
 
 #include <algorithm>
 #include <filesystem>
+#include <iostream>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -90,6 +93,7 @@ int BasicLustre::run(int argc, char* argv[])
       std::filesystem::canonical(std::filesystem::path(argv[0])).parent_path();
   const auto platform_path = (exe_dir / ".." / "config" / "basic_lustre.xml").lexically_normal();
   engine.load_platform(platform_path.string());
+  sim::core::events::publish_annotation("BasicLustre", "PlatformLoaded", platform_path.string());
 
   auto* host_mgs = requireHost("mgs_host");
   auto* host_mds = requireHost("mds_host");
@@ -104,6 +108,11 @@ int BasicLustre::run(int argc, char* argv[])
     ost_counts.push_back(count);
     total_osts += count;
   }
+
+  sim::core::events::publish_annotation("BasicLustre",
+                                        "ClusterLayout",
+                                        "OSS hosts=" + std::to_string(oss_hosts.size()) +
+                                            ", OSTs=" + std::to_string(total_osts));
 
   std::vector<std::shared_ptr<sim::core::ActorBase>> actors;
   actors.reserve(3 + oss_hosts.size());
@@ -128,6 +137,11 @@ int BasicLustre::run(int argc, char* argv[])
   client_params.desired_file_bytes = per_stripe_goal * stripes_available;
   auto client = std::make_shared<AutoClient>(std::string(defaults::CLIENT_MAILBOX), host_client, client_params);
 
+  sim::core::events::publish_annotation("BasicLustre",
+                                        "ClientConfig",
+                                        "sessions=" + std::to_string(session_target) +
+                                            ", target_bytes=" + std::to_string(client_params.desired_file_bytes));
+
   actors.emplace_back(mgs);
   actors.emplace_back(mds);
   actors.emplace_back(client);
@@ -151,7 +165,13 @@ int BasicLustre::run(int argc, char* argv[])
   }
   engine.add_actor(defaults::CLIENT_MAILBOX.data(), host_client, [client]() { client->run(); });
 
+  sim::core::events::publish_annotation("BasicLustre", "EngineStart", "Actors registered, starting engine loop");
   engine.run();
+  sim::core::events::publish_annotation("BasicLustre", "EngineStop", "Engine loop completed");
+
+  const auto report = sim::core::build_simulation_report();
+  std::cout << "\n==== Lustre Simulation Report ====\n" << report << std::endl;
+  sim::core::events::EventBus::instance().clear();
 
   return 0;
 }

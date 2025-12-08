@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/message.hpp"
+#include "core/simulation/message.hpp"
 #include "fs/lustre_sim/messages/base.hpp"
 
 #include <memory>

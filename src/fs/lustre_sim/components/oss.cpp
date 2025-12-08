@@ -1,7 +1,8 @@
 #include "fs/lustre_sim/components/oss.hpp"
 
-#include "core/logging.hpp"
-#include "core/message.hpp"
+#include "core/report/event_bus.hpp"
+#include "core/simulation/logging.hpp"
+#include "core/simulation/message.hpp"
 #include "fs/lustre_sim/messages/all.hpp"
 
 #include <inttypes.h>
@@ -44,7 +45,7 @@ void OssActor::run()
 
   auto comm = receiveAsync();
   sendStatusUpdate();
-  while (running_) {
+  while (isRunning()) {
     if (auto* msg = tryReceive(comm)) {
       handleRequest(*msg);
       delete msg;
@@ -67,7 +68,9 @@ void OssActor::handleRequest(const core::Message& msg)
   SIM_LOG_INFO(name(), "received id=%" PRIu64 " from %s payload=%s", msg.id, msg.src.c_str(), payload_desc.c_str());
 
   if (msg.as<msg::Shutdown>() != nullptr) {
-    running_ = false;
+    SIM_LOG_INFO(name(), "received shutdown from %s", msg.src.c_str());
+    sim::core::events::publish_annotation(name(), "Shutdown", "initiated by " + msg.src);
+    stop();
     return;
   }
 

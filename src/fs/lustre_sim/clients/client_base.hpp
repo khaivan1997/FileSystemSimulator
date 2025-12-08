@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/actor_base.hpp"
+#include "core/simulation/actor_base.hpp"
 #include "fs/lustre_sim/constants.hpp"
 
 #include <cstddef>

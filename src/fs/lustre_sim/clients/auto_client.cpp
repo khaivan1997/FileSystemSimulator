@@ -2,8 +2,8 @@
 
 #include "fs/lustre_sim/clients/auto_simulated_client.hpp"
 
-#include "core/logging.hpp"
-#include "core/message.hpp"
+#include "core/simulation/logging.hpp"
+#include "core/simulation/message.hpp"
 #include "util/random.hpp"
 
 #include <simgrid/s4u.hpp>
@@ -126,7 +126,6 @@ void AutoClient::run()
     send(mailbox, message);
   };
 
-  send_shutdown(params().mds_mailbox);
   send_shutdown(params().mgs_mailbox);
 }
 

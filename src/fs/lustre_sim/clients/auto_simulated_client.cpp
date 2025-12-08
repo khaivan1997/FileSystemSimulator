@@ -3,7 +3,7 @@
 #include <simgrid/s4u.hpp>
 #include <xbt/log.h>
 
-#include "core/logging.hpp"
+#include "core/simulation/logging.hpp"
 
 #include <algorithm>
 #include <inttypes.h>

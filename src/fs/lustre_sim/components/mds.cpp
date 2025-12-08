@@ -1,7 +1,8 @@
 #include "fs/lustre_sim/components/mds.hpp"
 
-#include "core/logging.hpp"
-#include "core/message.hpp"
+#include "core/report/event_bus.hpp"
+#include "core/simulation/logging.hpp"
+#include "core/simulation/message.hpp"
 
 #include <inttypes.h>
 #include <simgrid/s4u.hpp>
@@ -25,16 +26,16 @@ namespace sim::fs::lustre_sim {
         SIM_LOG_INFO(name(), "listening on host %s", host()->get_cname());
 
         auto comm = receiveAsync();
-  next_refresh_time_ = 0.0;
-  if (!params_.mgs_mailbox.empty())
-    requestOstTable();
+        next_refresh_time_ = 0.0;
+        if (!params_.mgs_mailbox.empty())
+            requestOstTable();
 
-        while (running_) {
+        while (isRunning()) {
             if (auto *msg = tryReceive(comm)) {
                 handleMessage(*msg);
                 delete msg;
             } else {
-      simgrid::s4u::this_actor::sleep_for(0.0001);
+                simgrid::s4u::this_actor::sleep_for(0.0001);
             }
             ensureOstTableRequest();
             reapPendingSends();
@@ -134,8 +135,8 @@ namespace sim::fs::lustre_sim {
         const bool snapshot_empty = cached_table_.empty();
         table_ready_ = mgs_ready_ && !snapshot_empty;
         request_needed_ = !table_ready_;
-  last_refresh_timestamp_ = simgrid::s4u::Engine::get_clock();
-  next_refresh_time_ = last_refresh_timestamp_;
+        last_refresh_timestamp_ = simgrid::s4u::Engine::get_clock();
+        next_refresh_time_ = last_refresh_timestamp_;
         refresh_in_flight_ = false;
         pending_request_id_ = 0;
 
@@ -252,11 +253,13 @@ namespace sim::fs::lustre_sim {
                                                  [&](const msg::OstEntry &entry) { return entry.name == ost_name; });
                 if (ost_it == cached_table_.end())
                     continue;
-                msg::FileLayout::Stripe stripe{static_cast<int>(layout.stripes.size()),
-                                              offset,
-                                              bytes,
-                                              ost_it->name,
-                                              ost_it->oss_mailbox};
+                msg::FileLayout::Stripe stripe{
+                    static_cast<int>(layout.stripes.size()),
+                    offset,
+                    bytes,
+                    ost_it->name,
+                    ost_it->oss_mailbox
+                };
                 layout.stripes.push_back(std::move(stripe));
                 offset += bytes;
             }
@@ -273,7 +276,7 @@ namespace sim::fs::lustre_sim {
                 return entry.online && entry.capacity_bytes > entry.used_bytes;
             };
             const std::size_t eligible_count =
-                std::count_if(cached_table_.begin(), cached_table_.end(), has_available_capacity);
+                    std::count_if(cached_table_.begin(), cached_table_.end(), has_available_capacity);
             if (eligible_count == 0) {
                 SIM_LOG_WARN(name(),
                              "no OST with available capacity for path=%s",
@@ -306,11 +309,13 @@ namespace sim::fs::lustre_sim {
                                   extent);
                     continue;
                 }
-                msg::FileLayout::Stripe stripe{static_cast<int>(layout.stripes.size()),
-                                               offset,
-                                               extent,
-                                               ost.name,
-                                               ost.oss_mailbox};
+                msg::FileLayout::Stripe stripe{
+                    static_cast<int>(layout.stripes.size()),
+                    offset,
+                    extent,
+                    ost.name,
+                    ost.oss_mailbox
+                };
                 layout.stripes.push_back(std::move(stripe));
                 offset += extent;
                 ++emitted;
@@ -445,7 +450,8 @@ namespace sim::fs::lustre_sim {
 
     void MdsActor::handleShutdown(const core::Message &msg) {
         SIM_LOG_INFO(name(), "received shutdown from %s", msg.src.c_str());
-        running_ = false;
+        sim::core::events::publish_annotation(name(), "Shutdown", "initiated by " + msg.src);
+        stop();
     }
 
     void MdsActor::handleLayoutFailure(const core::Message &msg, const msg::LayoutFailure &failure) {

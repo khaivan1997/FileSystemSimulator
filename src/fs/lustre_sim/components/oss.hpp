@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/actor_base.hpp"
+#include "core/simulation/actor_base.hpp"
 #include "fs/lustre_sim/components/ost.hpp"
 #include "fs/lustre_sim/constants.hpp"
 #include "storage/ost_base.hpp"
@@ -39,7 +39,6 @@ private:
   std::unordered_map<std::string, double> ost_recovery_deadline_;
   OssParams params_;
   double next_status_update_time_{0.0};
-  bool running_{true};
 };
 
 } // namespace sim::fs::lustre_sim

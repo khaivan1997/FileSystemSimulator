@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/message.hpp"
+#include "core/simulation/message.hpp"
 
 #include <simgrid/s4u.hpp>
 
@@ -29,9 +29,14 @@ protected:
   CommPtr receiveAsync();
   Message* tryReceive(CommPtr& comm);
   void reapPendingSends();
+  bool hasPendingSends() const { return !pending_async_sends_.empty(); }
 
   std::string name_;
   simgrid::s4u::Host* host_{nullptr};
+  bool running_{true};
+
+  void stop() { running_ = false; }
+  bool isRunning() const { return running_; }
 
 private:
   simgrid::s4u::Mailbox* mailbox_{nullptr};

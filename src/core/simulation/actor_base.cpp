@@ -1,9 +1,12 @@
-#include "core/actor_base.hpp"
+#include "core/simulation/actor_base.hpp"
+
+#include "core/report/event_bus.hpp"
 
 #include <simgrid/s4u.hpp>
 
 #include <atomic>
 #include <cstdint>
+#include <memory>
 #include <utility>
 
 namespace {
@@ -36,6 +39,8 @@ void ActorBase::send(const std::string& dst, const Message& msg)
   if (copy->payload)
     payload_size += copy->payload->payload_size_bytes();
   simgrid::s4u::Mailbox::by_name(dst)->put(copy, payload_size);
+  events::EventBus::instance().publish(std::make_unique<events::MessageEvent>(
+      name_, events::MessageDirection::Send, dst, copy->id, copy->payload ? copy->payload->debug_string() : "<null>"));
 }
 
 ActorBase::CommPtr ActorBase::sendAsync(const std::string& dst, const Message& msg)
@@ -50,6 +55,8 @@ ActorBase::CommPtr ActorBase::sendAsync(const std::string& dst, const Message& m
   if (copy->payload)
     payload_size += copy->payload->payload_size_bytes();
   auto comm = simgrid::s4u::Mailbox::by_name(dst)->put_async(copy, payload_size);
+  events::EventBus::instance().publish(std::make_unique<events::MessageEvent>(
+      name_, events::MessageDirection::Send, dst, copy->id, copy->payload ? copy->payload->debug_string() : "<null>"));
   if (comm)
     pending_async_sends_.push_back(comm);
   return comm;
@@ -57,7 +64,16 @@ ActorBase::CommPtr ActorBase::sendAsync(const std::string& dst, const Message& m
 
 Message* ActorBase::receiveBlocking()
 {
-  return mailbox_->get<Message>();
+  Message* message = mailbox_->get<Message>();
+  if (message != nullptr) {
+    events::EventBus::instance().publish(std::make_unique<events::MessageEvent>(
+        name_,
+        events::MessageDirection::Receive,
+        message->src,
+        message->id,
+        message->payload ? message->payload->debug_string() : "<null>"));
+  }
+  return message;
 }
 
 ActorBase::CommPtr ActorBase::receiveAsync()
@@ -79,6 +95,14 @@ Message* ActorBase::tryReceive(CommPtr& comm)
   Message* ready = pending_async_msg_;
   pending_async_msg_ = nullptr;
   comm = receiveAsync();
+  if (ready != nullptr) {
+    events::EventBus::instance().publish(std::make_unique<events::MessageEvent>(
+        name_,
+        events::MessageDirection::Receive,
+        ready->src,
+        ready->id,
+        ready->payload ? ready->payload->debug_string() : "<null>"));
+  }
   return ready;
 }
 

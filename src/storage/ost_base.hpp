@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/message.hpp"
+#include "core/simulation/message.hpp"
 
 #include <cstddef>
 #include <string>
