@@ -44,6 +44,8 @@ struct AnnotationRecord {
 
 class ReportCollector final : public EventVisitor {
 public:
+  static constexpr std::size_t kRecentLimit = 100;
+
   void visit(const MessageEvent& event) override
   {
     auto& stats = actor_stats_[event.actor()];
@@ -107,7 +109,7 @@ public:
     }
 
     if (!messages_.empty()) {
-      const std::size_t limit = 100;
+      const std::size_t limit = kRecentLimit;
       const std::size_t start = messages_.size() > limit ? messages_.size() - limit : 0;
       oss << "Recent message activity (last " << (messages_.size() - start) << "):\n";
       for (std::size_t i = start; i < messages_.size(); ++i) {
